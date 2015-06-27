@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,13 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
-    private ListView lvTeam;
-    private List<Team> teamList;
+        private ListView lvTeam;
+        private List<Team> teamList;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
         findViews();
     }
 
@@ -43,15 +42,12 @@ public class MainActivity extends ActionBarActivity {
                 Team team = (Team)parent.getItemAtPosition(position);
                 String info = team.getId() + " " + team.getName();
                 Toast.makeText(MainActivity.this, info, Toast.LENGTH_SHORT).show();
-                TextView tvId = (TextView) ((LinearLayout) view).getChildAt(1);
+                /*TextView tvId = (TextView) ((LinearLayout) view).getChildAt(1);
                 Toast.makeText(getApplicationContext(), tvId.getText(), Toast.LENGTH_SHORT).show();
-
-
                 TextView tvName = (TextView)((LinearLayout)view).getChildAt(2);
-                Toast.makeText(getApplicationContext(), tvName.getText(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), tvName.getText(), Toast.LENGTH_SHORT).show();*/
             }
         });
-
     }
 
     private class TeamAdapter extends BaseAdapter {
@@ -105,22 +101,32 @@ public class MainActivity extends ActionBarActivity {
                 convertView = layoutInflater.inflate(R.layout.list_item, parent, false);
             }
             // 依照position取得teamList內的team物件
-            Team team = teamList.get(position);
+            final Team team = teamList.get(position);
             // 找到convertView子元件imageView，並指定欲顯示的圖檔
             ImageView ivLogo = (ImageView)convertView.findViewById(R.id.ivLogo);
             ivLogo.setImageResource(team.getLogo());
             // 找到convertView子元件textView，並指定欲顯示的文字值
             TextView tvName = (TextView)convertView.findViewById(R.id.tvName);
             tvName.setText(team.getName());
+            tvName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), team.getName(), Toast.LENGTH_SHORT).show();
+                }
+            });
             TextView tvId = (TextView)convertView.findViewById(R.id.tvId);
             tvId.setText(Integer.toString(team.getId()));
+            tvId.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getApplicationContext(), String.valueOf(team.getId()), Toast.LENGTH_SHORT).show();
+                }
+            });
 
             return convertView;
 
         }
     };
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
